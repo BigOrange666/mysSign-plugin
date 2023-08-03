@@ -6,5 +6,5 @@ failSignCountCfg: 5
 signTime: 0 2 0 * * ?
 
 api:
-  url: "https://api.peel.eu.org/get"
+  url: "https://api.plaoc.eu.org/get"
   token: ""
