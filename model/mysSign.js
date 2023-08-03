@@ -406,5 +406,6 @@ export default class MysSign extends base {
             await common.sleep(1000)
             sign = await this.mysApi.getData('bbs_sign')
         }
+        return sign
     }
 }
