@@ -7,8 +7,12 @@ export default class base {
     this._path = process.cwd().replace(/\\/g, '/')
   }
 
-  get prefix() {
+  get prefix_gs() {
     return `Yz:genshin:${this.model}:`
+  }
+
+  get prefix_sr(){
+    return `Yz:honkaisr:${this.model}:`
   }
 
 }
