@@ -29,10 +29,8 @@ export default class apiTool {
         let host, hostRecord
         if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
             host = 'https://api-takumi.mihoyo.com/'
-            hostRecord = 'https://api-takumi-record.mihoyo.com/'
         } else if (['os_usa', 'os_euro', 'os_asia', 'os_cht'].includes(this.server)) {
             host = 'https://api-os-takumi.mihoyo.com/'
-            hostRecord = 'https://bbs-api-os.mihoyo.com/'
         }
         let urlMap = {
             genshin: {
@@ -85,21 +83,6 @@ export default class apiTool {
             }
         }
 
-        if (this.server.startsWith('os')) {
-            urlMap.genshin.detail.url = 'https://sg-public-api.hoyolab.com/event/calculateos/sync/avatar/detail'// 角色天赋详情
-            urlMap.genshin.detail.query = `lang=zh-cn&uid=${this.uid}&region=${this.server}&avatar_id=${data.avatar_id}`
-            urlMap.genshin.avatarSkill.url = 'https://sg-public-api.hoyolab.com/event/calculateos/avatar/skill_list'// 查询未持有的角色天赋
-            urlMap.genshin.avatarSkill.query = `lang=zh-cn&avatar_id=${data.avatar_id}`
-            urlMap.genshin.compute.url = 'https://sg-public-api.hoyolab.com/event/calculateos/compute'// 已支持养成计算
-            urlMap.genshin.blueprint.url = 'https://sg-public-api.hoyolab.com/event/calculateos/furniture/blueprint'
-            urlMap.genshin.blueprint.query = `share_code=${data.share_code}&region=${this.server}&lang=zh-cn`
-            urlMap.genshin.blueprintCompute.url = 'https://sg-public-api.hoyolab.com/event/calculateos/furniture/compute'
-            urlMap.genshin.blueprintCompute.body = {lang: 'zh-cn', ...data}
-            urlMap.genshin.ys_ledger.url = 'https://hk4e-api-os.mihoyo.com/event/ysledgeros/month_info'// 支持了国际服札记
-            urlMap.genshin.ys_ledger.query = `lang=zh-cn&month=${data.month}&uid=${this.uid}&region=${this.server}`
-            urlMap.genshin.useCdk.url = 'https://sg-hk4e-api.hoyoverse.com/common/apicdkey/api/webExchangeCdkey'
-            urlMap.genshin.useCdk.query = `uid=${this.uid}&region=${this.server}&lang=zh-cn&cdkey=${data.cdk}&game_biz=hk4e_global`
-        }
         return urlMap[this.game]
     }
 }
