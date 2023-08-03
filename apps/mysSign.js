@@ -11,7 +11,7 @@ export class mysSign extends plugin {
             name: '米游社签到',
             dsc: '米游社签到',
             event: 'message',
-            priority: 300,
+            priority: 100,
             rule: [
                 {
                     reg: '^(原神|星铁)?(#签到|#*米游社(自动)*签到)(force)*$',
