@@ -381,14 +381,15 @@ export default class MysSign extends base {
     }
 
     async getValidate(sign) {
+        // 无Token直接返回
+        if (!this.cfg.api.token) return sign
+
         let data = {headers: {}}
         let validate = {}
+        let num = 3
         while (true) {
-            // 无Token直接返回
-            if (!this.cfg.api.token) return sign
             // 加入Token
             sign.data['token'] = this.cfg.api.token
-
             validate = await this.mysApi.getData('validate', sign.data)
 
             if (validate.data?.validate) {
@@ -398,6 +399,9 @@ export default class MysSign extends base {
 
                 return await this.mysApi.getData('bbs_sign', data)
             }
+
+            num -= 1;
+            if (!num) break
 
             await common.sleep(1000)
             sign = await this.mysApi.getData('bbs_sign')
