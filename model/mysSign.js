@@ -241,10 +241,15 @@ export default class MysSign extends base {
 
         this.isTask = true
 
-        let cks = (await gsCfg.getBingCk()).ck
+        let cks_gs = (await gsCfg.getBingCk('gs')).ck
+        let cks_sr = (await gsCfg.getBingCk('sr')).ck
+
+        let cks = { ...cks_gs, ...cks_sr};
+
         let uids = lodash.filter(cks, (o) => {
             return o.autoSign !== false
         })
+
         uids = lodash.map(uids, 'uid')
 
         if (uids.length <= 0) {
@@ -254,7 +259,7 @@ export default class MysSign extends base {
 
         signing = true
 
-        let tips = ['开始原神签到任务']
+        let tips = ['开始签到任务']
 
         let {noSignNum} = await this.getsignNum(uids)
         let time = noSignNum * 6.1 + noSignNum * 0.2 + uids.length * 0.02 + 5
@@ -329,7 +334,7 @@ export default class MysSign extends base {
             }
         }
 
-        let msg = `原神签到任务完成：${uids.length}个\n已签：${finshNum}个\n成功：${sucNum}个\n失败：${failNum}个`
+        let msg = `签到任务完成：${uids.length}个\n已签：${finshNum}个\n成功：${sucNum}个\n失败：${failNum}个`
         if (invalidNum > 0) {
             msg += `\n失效：${invalidNum}个`
         }

@@ -258,7 +258,9 @@ export default class MysUser extends BaseModel {
       ck: this.ck,
       uid: this.getUid(game),
       qq: '',
-      ltuid: this.ltuid
+      game: game,
+      device_id: this.device,
+      ltuid: this.ltuid,
     }
   }
 
