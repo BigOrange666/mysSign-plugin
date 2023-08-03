@@ -231,7 +231,14 @@ export default class MysSign extends base {
         return false
     }
 
-    async signTask(manual) {
+    async signTask(manual){
+        let cks_gs = (await gsCfg.getBingCk('gs')).ck
+        let cks_sr = (await gsCfg.getBingCk('sr')).ck
+        await this.signTasks(manual,cks_gs)
+        await this.signTasks(manual,cks_sr)
+    }
+
+    async signTasks(manual, cks) {
         if (this.cfg.isAutoSign !== 1 && !manual) return
 
         if (signing && manual) {
@@ -241,10 +248,10 @@ export default class MysSign extends base {
 
         this.isTask = true
 
-        let cks_gs = (await gsCfg.getBingCk('gs')).ck
-        let cks_sr = (await gsCfg.getBingCk('sr')).ck
+        // let cks_gs = (await gsCfg.getBingCk('gs')).ck
+        // let cks_sr = (await gsCfg.getBingCk('sr')).ck
 
-        let cks = { ...cks_gs, ...cks_sr};
+        // let cks = { ...cks_gs, ...cks_sr};
 
         let uids = lodash.filter(cks, (o) => {
             return o.autoSign !== false
@@ -353,7 +360,6 @@ export default class MysSign extends base {
 
         signing = false
     }
-
     async setCache(day) {
         let end = Number(moment().endOf('day').format('X')) - Number(moment().format('X'))
         redis.setEx(this.key, end, String(day))
