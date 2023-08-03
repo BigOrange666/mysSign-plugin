@@ -62,6 +62,9 @@ export default class MysSign extends base {
         ck = this.setCk(ck)
         this.isSr = /sr/.test(ck.game)
         ck.region_name = ck.game === 'gs' ? '原神' : '崩坏：星穹铁道';
+
+        this.prefix = ck.game === 'gs'? this.prefix_gs : this.prefix_sr
+
         this.mysApi = new MysApi(ck.uid, ck.ck, {log: isLog, device_id: ck.device_id}, this.isSr)
         this.key = `${this.prefix}isSign:${this.mysApi.uid}`
         this.log = `[uid:${ck.uid}][qq:${lodash.padEnd(this.e.user_id, 10, ' ')}]`
@@ -112,7 +115,7 @@ export default class MysSign extends base {
         this.signInfo = signInfo.data
 
         if (this.signInfo.is_sign && !this.force) {
-            // logger.mark(`[原神已签到][uid:${this.mysApi.uid}][qq:${lodash.padEnd(this.e.user_id,11,' ')}]`)
+            logger.mark(`[已经签到][uid:${this.mysApi.uid}][qq:${lodash.padEnd(this.e.user_id,11,' ')}]`)
             let reward = await this.getReward(this.signInfo.total_sign_day)
             this.setCache(this.signInfo.total_sign_day)
             return {
@@ -208,12 +211,12 @@ export default class MysSign extends base {
             return true
         }
 
-        if (sign.data && sign.data.risk_code === 375) {
+        if (sign.data && sign.data.risk_code === 375 || sign.data.risk_code === 5001) {
             // 尝试使用打码
             sign = await this.getValidate(sign)
         }
 
-        if (sign.data && sign.data.risk_code === 375) {
+        if (sign.data && sign.data.risk_code === 375|| sign.data.risk_code === 5001) {
             this.signMsg = '验证码失败'
             sign.message = '验证码失败'
             this.is_verify = true
