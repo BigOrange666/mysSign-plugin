@@ -26,6 +26,14 @@ export class mysSign extends plugin {
         })
 
         this.set = gsCfg.getConfig('mys', 'set')
+
+        /** 定时任务 */
+        this.task = {
+            cron: this.set.signTime,
+            name: '米游社原神签到任务',
+            fnc: () => this.signTask()
+        }
+
     }
 
     /** #签到 */
