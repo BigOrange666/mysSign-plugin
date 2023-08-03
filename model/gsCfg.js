@@ -9,11 +9,11 @@ class GsCfg {
     constructor() {
         this.isSr = false
         /** 默认设置 */
-        this.defSetPath = './plugins/genshin/defSet/'
+        this.defSetPath = './plugins/mysSign-plugin/defSet/'
         this.defSet = {}
 
         /** 用户设置 */
-        this.configPath = './plugins/genshin/config/'
+        this.configPath = './plugins/mysSign-plugin/config/'
         this.config = {}
 
         /** 监听文件 */
@@ -142,13 +142,13 @@ class GsCfg {
     }
 
     cpCfg(app, name) {
-        if (!fs.existsSync('./plugins/genshin/config')) {
-            fs.mkdirSync('./plugins/genshin/config')
+        if (!fs.existsSync('./plugins/mysSign-plugin/config')) {
+            fs.mkdirSync('./plugins/mysSign-plugin/config')
         }
 
-        let set = `./plugins/genshin/config/${app}.${name}.yaml`
+        let set = `./plugins/mysSign-plugin/config/${app}.${name}.yaml`
         if (!fs.existsSync(set)) {
-            fs.copyFileSync(`./plugins/genshin/defSet/${app}/${name}.yaml`, set)
+            fs.copyFileSync(`./plugins/mysSign-plugin/defSet/${app}/${name}.yaml`, set)
         }
     }
 

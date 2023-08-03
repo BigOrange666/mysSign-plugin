@@ -3,6 +3,8 @@
  * 方便后续用于解耦
  * 临时处理，后续大概率重写 主要原因（懒）
  */
+import GsCfg from "../gsCfg.js";
+
 export default class apiTool {
     /**
      *
@@ -19,6 +21,7 @@ export default class apiTool {
         if (typeof isSr !== 'boolean') {
             this.game = isSr
         }
+        this.set = GsCfg.getConfig('mys', 'set')
     }
 
 
@@ -52,8 +55,8 @@ export default class apiTool {
                     sign: true
                 },
                 validate: {
-                    url: `https://api.peel.eu.org/get`,
-                    query: `gt=${data.gt}&challenge=${data.challenge}&token=Pomelo666`
+                    url: `${this.set.api.url}`,
+                    query: `gt=${data.gt}&challenge=${data.challenge}&token=${data.token}`
                 }
             },
             honkaisr: {
@@ -76,8 +79,8 @@ export default class apiTool {
                     sign: true
                 },
                 validate: {
-                    url: `https://api.peel.eu.org/get`,
-                    query: `gt=${data.gt}&challenge=${data.challenge}&token=Pomelo666`
+                    url: `${this.set.api.url}`,
+                    query: `gt=${data.gt}&challenge=${data.challenge}&token=${data.token}`
                 }
             }
         }
