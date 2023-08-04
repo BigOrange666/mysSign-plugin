@@ -97,6 +97,7 @@ class GsCfg {
                     let ckData = mys.getCkInfo(game)
                     ckData.qq = qq
                     if (!ck[uid]) {
+                        uid = `${game}-${uid}`
                         ck[uid] = ckData
                         ckQQ[qq] = ckData
                     }

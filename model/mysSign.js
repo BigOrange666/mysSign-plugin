@@ -234,14 +234,7 @@ export default class MysSign extends base {
         return false
     }
 
-    async signTask(manual){
-        let cks_gs = (await gsCfg.getBingCk('gs')).ck
-        await this.signTasks(manual,cks_gs)
-        let cks_sr = (await gsCfg.getBingCk('sr')).ck
-        await this.signTasks(manual,cks_sr)
-    }
-
-    async signTasks(manual, cks) {
+    async signTask(manual) {
         if (this.cfg.isAutoSign !== 1 && !manual) return
 
         if (signing && manual) {
@@ -251,16 +244,12 @@ export default class MysSign extends base {
 
         this.isTask = true
 
-        // let cks_gs = (await gsCfg.getBingCk('gs')).ck
-        // let cks_sr = (await gsCfg.getBingCk('sr')).ck
+        let cks_gs = (await gsCfg.getBingCk('gs')).ck
+        let cks_sr = (await gsCfg.getBingCk('sr')).ck
 
-        // let cks = { ...cks_gs, ...cks_sr};
+        let cks = { ...cks_gs, ...cks_sr};
 
-        let uids = lodash.filter(cks, (o) => {
-            return o.autoSign !== false
-        })
-
-        uids = lodash.map(uids, 'uid')
+        let uids = Object.keys(cks)
 
         if (uids.length <= 0) {
             if (manual) await this.e.reply('暂无ck需要签到')
@@ -310,7 +299,7 @@ export default class MysSign extends base {
 
             this.e.user_id = ck.qq
 
-            let ret = await this.doSign(ck, false)
+            let ret = await this.doSign(ck, true)
             if (ret.retcode === 0) {
                 if (ret.is_sign) {
                     finshNum++
