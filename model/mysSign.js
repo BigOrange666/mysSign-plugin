@@ -8,7 +8,7 @@ import common from '../../../lib/common/common.js'
 import cfg from '../../../lib/config/config.js'
 
 let signing = false
-gsCfg.cpCfg('mys', 'set')
+
 export default class MysSign extends base {
     constructor(e) {
         super(e)
@@ -236,8 +236,8 @@ export default class MysSign extends base {
 
     async signTask(manual){
         let cks_gs = (await gsCfg.getBingCk('gs')).ck
-        let cks_sr = (await gsCfg.getBingCk('sr')).ck
         await this.signTasks(manual,cks_gs)
+        let cks_sr = (await gsCfg.getBingCk('sr')).ck
         await this.signTasks(manual,cks_sr)
     }
 
