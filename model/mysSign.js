@@ -37,7 +37,7 @@ export default class MysSign extends base {
             return false
         }
 
-        let uids = lodash.map(ck, 'uid')
+        let uids = Object.keys(ck)
 
         if (uids.length > 1) {
             await e.reply('多账号签到中...')
@@ -58,12 +58,12 @@ export default class MysSign extends base {
         await e.reply(msg)
     }
 
-    async doSign(ck, isLog = true) {
+    async doSign(ck, isLog = false) {
         ck = this.setCk(ck)
         this.isSr = /sr/.test(ck.game)
         ck.region_name = ck.game === 'gs' ? '原神' : '崩坏：星穹铁道';
 
-        this.prefix = ck.game === 'gs'? this.prefix_gs : this.prefix_sr
+        this.prefix = ck.game === 'gs' ? this.prefix_gs : this.prefix_sr
 
         this.mysApi = new MysApi(ck.uid, ck.ck, {log: isLog, device_id: ck.device_id}, this.isSr)
         this.key = `${this.prefix}isSign:${this.mysApi.uid}`
@@ -115,7 +115,7 @@ export default class MysSign extends base {
         this.signInfo = signInfo.data
 
         if (this.signInfo.is_sign && !this.force) {
-            logger.mark(`[已经签到][uid:${this.mysApi.uid}][qq:${lodash.padEnd(this.e.user_id,11,' ')}]`)
+            logger.mark(`[已经签到][uid:${this.mysApi.uid}][qq:${lodash.padEnd(this.e.user_id, 11, ' ')}]`)
             let reward = await this.getReward(this.signInfo.total_sign_day)
             this.setCache(this.signInfo.total_sign_day)
             return {
@@ -216,7 +216,7 @@ export default class MysSign extends base {
             sign = await this.getValidate(sign)
         }
 
-        if (sign.data && sign.data.risk_code === 375|| sign.data.risk_code === 5001) {
+        if (sign.data && sign.data.risk_code === 375 || sign.data.risk_code === 5001) {
             this.signMsg = '验证码失败'
             sign.message = '验证码失败'
             this.is_verify = true
@@ -247,7 +247,7 @@ export default class MysSign extends base {
         let cks_gs = (await gsCfg.getBingCk('gs')).ck
         let cks_sr = (await gsCfg.getBingCk('sr')).ck
 
-        let cks = { ...cks_gs, ...cks_sr};
+        let cks = {...cks_gs, ...cks_sr};
 
         let uids = Object.keys(cks)
 
@@ -299,7 +299,7 @@ export default class MysSign extends base {
 
             this.e.user_id = ck.qq
 
-            let ret = await this.doSign(ck, true)
+            let ret = await this.doSign(ck, false)
             if (ret.retcode === 0) {
                 if (ret.is_sign) {
                     finshNum++
@@ -352,6 +352,7 @@ export default class MysSign extends base {
 
         signing = false
     }
+
     async setCache(day) {
         let end = Number(moment().endOf('day').format('X')) - Number(moment().format('X'))
         redis.setEx(this.key, end, String(day))
@@ -384,9 +385,8 @@ export default class MysSign extends base {
 
         let data = {headers: {}}
         let validate = {}
-        let num = 3
-        while (true) {
-            // 加入Token
+
+        for (let i = 0; i < 2; i++) {
             sign.data['token'] = this.cfg.api.token
             validate = await this.mysApi.getData('validate', sign.data)
 
@@ -397,13 +397,11 @@ export default class MysSign extends base {
 
                 return await this.mysApi.getData('bbs_sign', data)
             }
-
-            num -= 1;
-            if (!num) break
-
+            // 暂停 1秒
             await common.sleep(1000)
             sign = await this.mysApi.getData('bbs_sign')
         }
+
         return sign
     }
 }

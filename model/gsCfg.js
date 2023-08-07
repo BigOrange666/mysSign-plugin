@@ -123,7 +123,7 @@ class GsCfg {
             for (let game in ltuid.uids) {
                 let uids = ltuid.uids[game]
                 for (let uid of uids) {
-                    cks[uid] = {
+                    cks[`${game}-${uid}`] = {
                         'ck': ltuid.ck,
                         'uid': uid,
                         'game': game,
@@ -132,7 +132,6 @@ class GsCfg {
                 }
             }
         }
-        // console.log(cks)
         return cks
     }
 
