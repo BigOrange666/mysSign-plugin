@@ -21,7 +21,13 @@ export class mysSign extends plugin {
                     reg: '^#*(原神|星铁)?(全部签到|签到任务)(force)*$',
                     permission: 'master',
                     fnc: 'signTask'
-                }
+                },
+                {
+                    reg: '^#*(设置)(url|token)?(:)(.*)$',
+                    permission: 'master',
+                    fnc: 'setAPI'
+                },
+
             ]
         })
 
@@ -45,6 +51,31 @@ export class mysSign extends plugin {
     async signTask() {
         let mysSign = new MysSign(this.e)
         await mysSign.signTask(!!this?.e?.msg)
+    }
+
+    async setAPI(e){
+        // 获取
+        let test = e.msg.replace(/#*(设置)?(url|token):/,'')
+
+        //
+        let type = e.msg.includes('url') ? 'url':'token'
+
+        switch (type){
+            case 'url':     // 修改URL
+                this.set.api.url = test
+                break
+
+            case 'token':   // 修改Token
+                this.set.api.token = test
+                break
+        }
+        let tips = []
+
+        tips.push(`接口:${this.set.api.url}`)
+        tips.push(`令牌:${this.set.api.token}`)
+
+        e.reply(tips)
+
     }
 
 }
