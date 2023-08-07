@@ -33,7 +33,7 @@ export default class MysSign extends base {
         }
 
         if (signing) {
-            e.reply('原神自动签到进行中，暂不能手动签到...')
+            e.reply('自动签到进行中，暂不能手动签到...')
             return false
         }
 
@@ -397,7 +397,7 @@ export default class MysSign extends base {
 
                 return await this.mysApi.getData('bbs_sign', data)
             }
-            // 暂停 1秒
+
             await common.sleep(1000)
             sign = await this.mysApi.getData('bbs_sign')
         }
