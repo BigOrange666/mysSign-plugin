@@ -54,10 +54,9 @@ export class mysSign extends plugin {
     }
 
     async setAPI(e){
-        // 获取
-        let test = e.msg.replace(/#*(设置)?(url|token):/,'')
 
-        //
+        let test = e.msg.replace(/#*(设置)(url|token)?(:)/,'')
+
         let type = e.msg.includes('url') ? 'url':'token'
 
         if (test){
@@ -74,8 +73,8 @@ export class mysSign extends plugin {
 
         let tips = []
 
-        tips.push(`接口:${this.set.api.url}`)
-        tips.push(`令牌:${this.set.api.token}`)
+        tips.push(`接口:${this.set.api.url}`,'\n')
+        tips.push(`令牌:${this.set.api.token}`,'\n')
 
         e.reply(tips)
 
