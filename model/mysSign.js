@@ -386,7 +386,7 @@ export default class MysSign extends base {
         let data = {headers: {}}
         let validate = {}
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 5; i++) {
             sign.data['token'] = this.cfg.api.token
             validate = await this.mysApi.getData('validate', sign.data)
 
