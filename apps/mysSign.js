@@ -60,15 +60,18 @@ export class mysSign extends plugin {
         //
         let type = e.msg.includes('url') ? 'url':'token'
 
-        switch (type){
-            case 'url':     // 修改URL
-                this.set.api.url = test
-                break
+        if (test){
+            switch (type){
+                case 'url':     // 修改URL
+                    this.set.api.url = test
+                    break
 
-            case 'token':   // 修改Token
-                this.set.api.token = test
-                break
+                case 'token':   // 修改Token
+                    this.set.api.token = test
+                    break
+            }
         }
+
         let tips = []
 
         tips.push(`接口:${this.set.api.url}`)
